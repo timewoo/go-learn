@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -14,7 +15,9 @@ func main() {
 	// pointers()
 	// structData()
 	// arrayData()
-	slicesData()
+	// slicesData()
+	// mapData()
+	useFnAsParamter()
 }
 
 func pointers() {
@@ -96,4 +99,61 @@ func slicesData() {
 	var increase []int
 	increase = append(increase, 2, 5)
 	fmt.Printf("len=%d cap=%d %v\n", len(increase), cap(increase), increase)
+
+	// rang slices
+	var loop = []int{1, 34, 542, 1, 43, 2, 4}
+	for i, v := range loop {
+		fmt.Printf("%d = %v\n", i, v)
+	}
+}
+
+func mapData() {
+	var m = make(map[string]Demo)
+	m["test"] = Demo{1, "value"}
+	fmt.Println(m["test"])
+
+	var n = map[string]Demo{
+		"test": Demo{2, "value"},
+	}
+	fmt.Println(n)
+
+	// mutating map
+	n["test"] = Demo{1, "1"}
+	fmt.Println(n["test"])
+
+	delete(n, "test")
+	fmt.Println(n)
+
+	// check the key has value,if not,the ok is false,and v is empty value
+	v, ok := n["test"]
+	fmt.Println("the value ", v, "Present?", ok)
+
+	v1, ok := m["test"]
+	fmt.Println("the value ", v1, "Present?", ok)
+
+	// count every words
+	var char = strings.Fields("sd sd aer efds sdf a")
+	var count = make(map[string]int)
+	for _, v := range char {
+		v1, ok := count[v]
+		if ok {
+			count[v] = v1 + 1
+		} else {
+			count[v] = 1
+		}
+	}
+	fmt.Println(count)
+}
+
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
+}
+
+func useFnAsParamter() {
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
+	}
+	fmt.Println(hypot(5, 3))
+	fmt.Println(compute(hypot))
+	fmt.Println(compute(math.Pow))
 }
